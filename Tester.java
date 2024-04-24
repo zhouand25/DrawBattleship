@@ -20,7 +20,6 @@ public class Tester {
     while (true) {
       // Error handling
       try {
-        drawGrid();
         Scanner start = new Scanner(System.in);
         System.out.println("Welcome to Battleship!\n");
         System.out.println(
@@ -29,6 +28,8 @@ public class Tester {
         System.out.println("INSTRUCTIONS for each game mode will be shown after mode selection :)");
 
         mode = start.nextInt();
+        Thread.sleep(2000);
+        drawGrid();
         break;
       } catch (Exception e) {
         System.out.println("Invalid Input: Please set mode equal to -1, 0, or, 1");
@@ -110,6 +111,7 @@ public class Tester {
       System.out.println("CONFIGURATION HAS BEEN SET");
       System.out.println("CONFIGURATION HAS BEEN SET");
       System.out.println("CONFIGURATION HAS BEEN SET\n");
+      drawGrid();
       System.out.println("PLAYER 2: Please do not scroll up.");
       System.out.println(m);
       System.out.println("PLAYER 2: Guess");
@@ -158,6 +160,7 @@ public class Tester {
             // If all ships are gone than terminate game
             if (shipsRemaining == 0) {
               System.out.println("----------------------------------");
+              guessBoard.printBoard();
               System.out.println("\nYou Won! In " + numGuesses + " guesses!");
               gameEnd = true;
               continue;
@@ -182,6 +185,7 @@ public class Tester {
   }
 
   public static void drawGrid() {
+    Rectangle background = new Rectangle(0, 0, 700, 700);
     if(mode==0) { 
     Rectangle grid = new Rectangle(100, 100, 350, 350);
     for (int i = 100; i < 450; i += 50) {
@@ -190,6 +194,15 @@ public class Tester {
       Line ver = new Line(i, 100, i, 450);
       Line hor = new Line(100, i, 450, i);
     }
+    }
+    if(mode==1) {
+      Rectangle grid = new Rectangle(20, 20, 500, 500);
+      for (int i = 20; i < 520; i += 50) {
+        Text xlab = new Text("" + (i - 20) / 50, i, 20);
+        Text ylab = new Text("" + (i - 20) / 50, 20, i);
+        Line ver = new Line(i, 20, i, 520);
+        Line hor = new Line(20, i, 520, i);
+      }
     }
   }
 
@@ -263,19 +276,34 @@ class Board {
   if(Tester.mode == 0) {
      for(int i=0; i<7; ++i) {
        for(int j=0; j<7; ++j) {
-         if(board[i][j] == 2) {
-           Oval temp = new Oval(50*i + 100, 50*j +100, 20, 20);
-           temp.fill()
+         if(gameBoard[i][j] == 2) {
+           Oval temp = new Oval(50*j + 115, 50*i +115, 20, 20);
+           temp.setFillColor(0, 120, 165);
+         }
+         if(gameBoard[i][j] == 1) {
+           Oval temp = new Oval(50*j+115, 50*i+115, 20, 20);
+           temp.setFillColor(240, 50, 50);
          }
        }
      }
-    
+  }
+  if(Tester.mode == 1) {
+     for(int i=0; i<9; ++i) {
+       for(int j=0; j<9; ++j) {
+         if(gameBoard[i][j] == 2) {
+           Oval temp = new Oval(50*j + 35, 50*i +35, 20, 20);
+           temp.setFillColor(0, 120, 165);
+         }
+         if(gameBoard[i][j] == 1) {
+           Oval temp = new Oval(50*j+35, 50*i+35, 20, 20);
+           temp.setFillColor(240, 50, 50);
+         }
+       }
+     }
   }
   
 
-
-    
-  }
+}
 
   // setter method (2d game board)
   public void setValue(int col, int row, int value) {
@@ -373,6 +401,10 @@ class Board {
     for (int i = x1; i < x2; ++i) {
       for (int j = y1; j < y2; ++j) {
         gameBoard[j][i] = 1;
+        if(Tester.mode==1) {
+         Oval temp = new Oval(50*i + 35, 50*j +35, 20, 20);
+         temp.setFillColor(50, 60 ,70);
+        }
       }
     }
   }
@@ -405,7 +437,6 @@ class Board {
         }
         System.out.println("-----------------------------------------------------");
       }
-      printBoard();
       valid = 0;
     }
   }
