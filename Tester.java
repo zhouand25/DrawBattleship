@@ -57,7 +57,7 @@ public class Tester {
         System.out.println(
             "-Guess one point of the grid (determined by X and Y) and input the x-coordinate and y-coordinate of your guess [BOTH BETWEEN 0 and 7 INCLUSIVE], and whether part of the enemy ship lies on that coordinate will be returned to you as feedback.\n");
         System.out.println(
-            "-A 'hit' will be returned (with a 1 displayed on your grid) will show the presence of the enemy ship at that point, while a 'miss' will be returned (with a 2 on the grid) if the enemy ship is not present.\n");
+            "-A 'hit' will be returned (with a red circle displayed on the board display) will show the presence of the enemy ship at that point, while a 'miss' will be returned (with a blue circle on the board display) if the enemy ship is not present.\n");
         System.out.println(
             "-A ship is destroyed when every one of the points it occupies on the grid are destroyed by “hits” / the user’s guesses.\n");
         System.out.println(
@@ -93,7 +93,7 @@ public class Tester {
       System.out.println(
           "-Input the x-coordinate and y-coordinate of your guess for the location of an enemy ship, whether a part of the enemy ship lies on that coordinate will be returned to you as feedback. \n");
       System.out.println(
-          "-A 'hit' will be returned (with a 1 displayed on your grid) will show the presence of the enemy ship at that point, while a “miss” will be returned (with a 2 on the grid) if the enemy ship is not present.\n");
+          "-A 'hit' will be returned (with a red circle displayed on the board display) will show the presence of the enemy ship at that point, while a “miss” will be returned (with a blue circle displayed on the board display) if the enemy ship is not present.\n");
       System.out.println(
           "-A ship is destroyed when every one of the points it occupies on the grid are destroyed by 'hits' / the user’s guesses.\n");
       System.out.println(
@@ -184,10 +184,14 @@ public class Tester {
 
   }
 
+  //Draws the different boards
   public static void drawGrid() {
+    //draws a background (can clear screen if neccesary)
     Rectangle background = new Rectangle(0, 0, 700, 700);
-    if(mode<=0) { 
+    //Fast mode
+    if(mode<=0) {
     Rectangle grid = new Rectangle(100, 100, 400, 400);
+      //Drawing lines (vertical and horizontal) creating 8x8 50px squares
     for (int i = 100; i < 500; i += 50) {
       Text xlab = new Text("" + (i - 100) / 50, i, 100);
       Text ylab = new Text("" + (i - 100) / 50, 100, i);
@@ -195,8 +199,10 @@ public class Tester {
       Line hor = new Line(100, i, 500, i);
     }
     }
+    //2 player mode
     if(mode==1) {
       Rectangle grid = new Rectangle(20, 20, 500, 500);
+      //Draws vertical and horizontal lines creating a 10x10 grid of 50px squares
       for (int i = 20; i < 520; i += 50) {
         Text xlab = new Text("" + (i - 20) / 50, i, 20);
         Text ylab = new Text("" + (i - 20) / 50, 20, i);
@@ -274,27 +280,37 @@ class Board {
 
     //For Fast Mode draw
   if(Tester.mode <= 0) {
+    //Draws 8x8 grid
      for(int i=0; i<8; ++i) {
        for(int j=0; j<8; ++j) {
+         //If there is a hit fill the circle color a red color
          if(gameBoard[i][j] == 2) {
+           //Pixel location based on coordinate on board
            Oval temp = new Oval(50*j + 115, 50*i +115, 20, 20);
            temp.setFillColor(0, 120, 165);
          }
+         //If there is nothing no ship, fill the circle with a blue color
          if(gameBoard[i][j] == 1) {
+           //Pixel location based on coordinate on board
            Oval temp = new Oval(50*j+115, 50*i+115, 20, 20);
            temp.setFillColor(240, 50, 50);
          }
        }
      }
   }
+    //For regular draw mode
   if(Tester.mode == 1) {
      for(int i=0; i<10; ++i) {
        for(int j=0; j<10; ++j) {
+         //If there is a hit, then fill the circle as red
          if(gameBoard[i][j] == 2) {
+           //Pixel location based on coordinate on board
            Oval temp = new Oval(50*j + 35, 50*i +35, 20, 20);
            temp.setFillColor(0, 120, 165);
          }
+         //If there is empty space, fill circle as blue
          if(gameBoard[i][j] == 1) {
+           //Pixel location based on coordinate on board
            Oval temp = new Oval(50*j+35, 50*i+35, 20, 20);
            temp.setFillColor(240, 50, 50);
          }
@@ -401,6 +417,7 @@ class Board {
     for (int i = x1; i < x2; ++i) {
       for (int j = y1; j < y2; ++j) {
         gameBoard[j][i] = 1;
+        //For the opponent ship selection this is the fill command to display the ship placement on a temporary board (ships as black circles)
         if(Tester.mode==1) {
          Oval temp = new Oval(50*i + 35, 50*j +35, 20, 20);
          temp.setFillColor(50, 60 ,70);
