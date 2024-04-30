@@ -55,7 +55,7 @@ public class Tester {
         System.out.println(
             "-The games ends in your victory if you destroy all of the generated ships by guessing their locations.");
         System.out.println(
-            "-Guess one point of the grid (determined by X and Y) and input the x-coordinate and y-coordinate of your guess, and whether part of the enemy ship lies on that coordinate will be returned to you as feedback.\n");
+            "-Guess one point of the grid (determined by X and Y) and input the x-coordinate and y-coordinate of your guess [BOTH BETWEEN 0 and 7 INCLUSIVE], and whether part of the enemy ship lies on that coordinate will be returned to you as feedback.\n");
         System.out.println(
             "-A 'hit' will be returned (with a 1 displayed on your grid) will show the presence of the enemy ship at that point, while a 'miss' will be returned (with a 2 on the grid) if the enemy ship is not present.\n");
         System.out.println(
@@ -79,7 +79,7 @@ public class Tester {
           "BATTLESHIP: REGULAR GAME INSTRUCTIONS \n\n-This game is a two player game, with one player setting up the puzzle/game, while the other person guesses.\n");
       System.out.println("Player 1 (The creator):\n");
       System.out.println(
-          "-Player 1 configures the placement of 5 ships with the corresponding dimensions: (2 x 1), (3 x 1), (3 x 1), (4 x 1), and (5 x 1) on a 10x10 grid.\n");
+          "-Player 1 configures the placement of 5 ships with the corresponding dimensions: (2 x 1), (3 x 1), (3 x 1), (4 x 1), and (5 x 1) on a 10x10 grid [0 to 9 INCLUSIVE].\n");
       System.out.println(
           "-A configuration of ships is only valid when no ships occupy the same coordinates, lie completely on the grid, and lie perpendicular to the edges of the board (i.e lie straight, not diagonally).\n");
       System.out.println(
@@ -186,13 +186,13 @@ public class Tester {
 
   public static void drawGrid() {
     Rectangle background = new Rectangle(0, 0, 700, 700);
-    if(mode==0) { 
-    Rectangle grid = new Rectangle(100, 100, 350, 350);
-    for (int i = 100; i < 450; i += 50) {
+    if(mode<=0) { 
+    Rectangle grid = new Rectangle(100, 100, 400, 400);
+    for (int i = 100; i < 500; i += 50) {
       Text xlab = new Text("" + (i - 100) / 50, i, 100);
       Text ylab = new Text("" + (i - 100) / 50, 100, i);
-      Line ver = new Line(i, 100, i, 450);
-      Line hor = new Line(100, i, 450, i);
+      Line ver = new Line(i, 100, i, 500);
+      Line hor = new Line(100, i, 500, i);
     }
     }
     if(mode==1) {
@@ -273,9 +273,9 @@ class Board {
     System.out.println(output); */
 
     //For Fast Mode draw
-  if(Tester.mode == 0) {
-     for(int i=0; i<7; ++i) {
-       for(int j=0; j<7; ++j) {
+  if(Tester.mode <= 0) {
+     for(int i=0; i<8; ++i) {
+       for(int j=0; j<8; ++j) {
          if(gameBoard[i][j] == 2) {
            Oval temp = new Oval(50*j + 115, 50*i +115, 20, 20);
            temp.setFillColor(0, 120, 165);
@@ -288,8 +288,8 @@ class Board {
      }
   }
   if(Tester.mode == 1) {
-     for(int i=0; i<9; ++i) {
-       for(int j=0; j<9; ++j) {
+     for(int i=0; i<10; ++i) {
+       for(int j=0; j<10; ++j) {
          if(gameBoard[i][j] == 2) {
            Oval temp = new Oval(50*j + 35, 50*i +35, 20, 20);
            temp.setFillColor(0, 120, 165);
@@ -512,33 +512,4 @@ class Board {
     return numShips - numDestroyed;
   }
 
-}
-
-class PushButton {
-  private RoundRect shpButton; // Button Shape
-  private boolean isOn; // Button state
-
-  public PushButton() {
-    // Create button shape and initialize
-    shpButton = new RoundRect(100, 100, 75, 50, 20, 20);
-    shpButton.setFillColor(200);
-
-    // Starts off
-    isOn = false;
-
-    // Set button click event handler method
-    shpButton.setMousePressedHandler(this::onPressed);
-  }
-
-  private void onPressed(Shape shp, double x, double y, int button) {
-    // Toggle button state
-    isOn = !isOn;
-
-    // Set button fill color based on state
-    if (isOn) {
-      shpButton.setFillColor(0, 255, 0);
-    } else {
-      shpButton.setFillColor(200);
-    }
-  }
 }
